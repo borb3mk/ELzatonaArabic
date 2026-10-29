@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الموسوعة الذهبية الشاملة • لغة عربية أولى ثانوي (الترم الأول)</title>
+  <!-- خطوط عربية فاخرة: Cairo & Tajawal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <!-- مكتبة الأيقونات Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Tailwind CSS عبر CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e',
+            },
+            royal: {
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#080d1a',
+            },
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            tajawal: ['Tajawal', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #080d1a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #0284c7;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #38bdf8;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .content-section {
+        display: block !important;
+        page-break-before: always;
+      }
+      .bg-royal-950, .bg-royal-900, .bg-slate-900, .bg-slate-950 {
+        background: transparent !important;
+        border-color: #ccc !important;
+        color: #000 !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-royal-950 text-slate-100 min-h-screen selection:bg-brand-500 selection:text-white custom-scrollbar">
+
+  <!-- شريط تقدم القراءة في الأعلى -->
+  <div id="scrollProgress" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold-400 via-sky-400 to-emerald-400 z-50 transform origin-right scale-x-0 transition-transform"></div>
+
+  <!-- صندوق الإشعارات السريعة (Toast) -->
+  <div id="toast" class="fixed bottom-6 left-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-800 text-white border border-slate-700 px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
+    <span id="toastMsg" class="text-sm font-bold">تم نسخ التلخيص بنجاح!</span>
+  </div>
+
+  <!-- القائمة العلوية الثابتة (Navbar) -->
+  <header class="sticky top-0 z-40 bg-royal-900/90 backdrop-blur-md border-b border-slate-800 no-print transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- الشعار والهوية -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('grammar')">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-gold-400 flex items-center justify-center shadow-lg shadow-sky-500/20">
+            <i class="fa-solid fa-book-open-reader text-white text-2xl"></i>
+          </div>
+          <div>
+            <span class="text-xl font-black tracking-tight text-white flex items-center gap-2">
+              الموسوعة الذهبية <span class="text-xs px-2.5 py-0.5 rounded-full bg-gold-400/20 text-gold-400 border border-gold-400/30 font-bold">أولى ثانوي</span>
+            </span>
+            <p class="text-xs text-slate-400 hidden sm:block">المراجعة النهائية الشاملة • الترم الأول كاملاً</p>
+          </div>
+        </div>
+
+        <!-- محرك البحث الفوري في الصفحة -->
+        <div class="hidden md:flex items-center relative flex-1 max-w-sm mx-6">
+          <i class="fa-solid fa-magnifying-glass absolute right-3.5 text-slate-400 text-sm"></i>
+          <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="ابحث عن قاعدة، إعراب، شاعر، أو تريكة..." class="w-full bg-slate-900/90 text-sm rounded-xl pr-10 pl-4 py-2.5 border border-slate-700 focus:outline-none focus:border-sky-400 text-slate-200 placeholder-slate-500 transition-all">
+        </div>
+
+        <!-- أزرار التبويب الرئيسية -->
+        <nav class="hidden xl:flex items-center gap-1.5">
+          <button onclick="switchTab('grammar')" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold text-sky-400 bg-sky-950/70 border border-sky-800/60 transition flex items-center gap-2" data-target="grammar">
+            <i class="fa-solid fa-spell-check"></i> النحو الشامل
+          </button>
+          <button onclick="switchTab('rhetoric')" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-2" data-target="rhetoric">
+            <i class="fa-solid fa-feather-pointed"></i> البلاغة والبيان
+          </button>
+          <button onclick="switchTab('literature')" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-2" data-target="literature">
+            <i class="fa-solid fa-landmark"></i> تاريخ الأدب
+          </button>
+          <button onclick="switchTab('tricks')" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-2" data-target="tricks">
+            <i class="fa-solid fa-wand-magic-sparkles text-gold-400"></i> فخاخ الامتحانات
+          </button>
+          <button onclick="switchTab('quiz')" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-2" data-target="quiz">
+            <i class="fa-solid fa-award text-emerald-400"></i> اختبار الـ 100%
+          </button>
+        </nav>
+
+        <!-- أدوات التحكم والطباعة وقائمة الموبايل -->
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" title="طباعة أو تحميل كملف PDF" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition">
+            <i class="fa-solid fa-print"></i>
+          </button>
+          <button onclick="toggleMobileMenu()" class="xl:hidden p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- قائمة الهواتف المحمولة -->
+    <div id="mobileMenu" class="hidden xl:hidden border-t border-slate-800 bg-royal-900/95 px-4 pt-3 pb-5 space-y-2">
+      <input type="text" onkeyup="handleSearchMobile(this.value)" placeholder="ابحث في كامل المنهج..." class="w-full bg-slate-800 text-sm rounded-lg px-3 py-2 border border-slate-700 text-slate-200 mb-3 focus:outline-none focus:border-sky-400">
+      <button onclick="switchTab('grammar'); toggleMobileMenu();" class="w-full text-right px-4 py-2.5 rounded-lg text-sm font-bold bg-sky-950/80 text-sky-400 border border-sky-800/60 flex items-center gap-2">
+        <i class="fa-solid fa-spell-check"></i> النحو الشامل (الوحدتان كاملتان)
+      </button>
+      <button onclick="switchTab('rhetoric'); toggleMobileMenu();" class="w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-feather-pointed"></i> علم البيان والمحسنات والعلاقات
+      </button>
+      <button onclick="switchTab('literature'); toggleMobileMenu();" class="w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-landmark"></i> تاريخ الأدب (الجاهلي والإسلامي والأموي)
+      </button>
+      <button onclick="switchTab('tricks'); toggleMobileMenu();" class="w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-wand-magic-sparkles text-gold-400"></i> كبسولة فخاخ الامتحانات
+      </button>
+      <button onclick="switchTab('quiz'); toggleMobileMenu();" class="w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-award text-emerald-400"></i> بنك الأسئلة والاختبار التفاعلي
+      </button>
+    </div>
+  </header>
+
+  <!-- الواجهة الترحيبية والملخص الإحصائي -->
+  <section class="relative overflow-hidden pt-12 pb-16 border-b border-slate-800/80 bg-gradient-to-b from-royal-900 to-royal-950 no-print">
+    <div class="absolute -top-40 right-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-20 left-10 w-80 h-80 bg-gold-400/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs sm:text-sm font-bold mb-4">
+        <i class="fa-solid fa-graduation-cap text-gold-400"></i> مراجعة نهائية مركزة وشاملة لمنهج اللغة العربية (الصف الأول الثانوي)
+      </div>
+
+      <!-- Credits Badge -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mb-6">
+        <span dir="ltr" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs sm:text-sm font-semibold text-slate-200 shadow-md">
+          <i class="fa-solid fa-user-pen text-sky-400"></i> Information gathered by <strong class="text-white font-bold">Abdelrahman Abdallah</strong>
+        </span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+        الموسوعة الرقمية لمراجعة <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-brand-500 to-gold-400">اللغة العربية</span>
+      </h1>
+      <p class="max-w-4xl mx-auto text-slate-300 text-base sm:text-lg leading-relaxed mb-10 font-tajawal">
+        كل قاعدة نحوية، تفاصيل كان وكاد التامتين والناقصتين، إعمال المشتقات الثلاثة، أسرار التشبيه والاستعارة والمحسنات، تاريخ الأدب لعصور الجاهلية وصدر الإسلام وبني أمية، مع بنك أسئلة وتريكات ليلة الامتحان التي لا يخلو منها أي اختبار.
+      </p>
+
+      <!-- شريط الإحصاءات السريعة -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 text-center hover:border-sky-500/50 transition">
+          <p class="text-2xl font-black text-sky-400 mb-1">النحو كاملاً</p>
+          <p class="text-xs text-slate-400 font-semibold">الأفعال الناقصة والتامة + المشتقات العاملة</p>
+        </div>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 text-center hover:border-gold-400/50 transition">
+          <p class="text-2xl font-black text-gold-400 mb-1">البلاغة والبيان</p>
+          <p class="text-xs text-slate-400 font-semibold">التشبيه، الاستعارة، المحسنات، والعلاقات</p>
+        </div>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 text-center hover:border-emerald-500/50 transition">
+          <p class="text-2xl font-black text-emerald-400 mb-1">الأدب والنصوص</p>
+          <p class="text-xs text-slate-400 font-semibold">العصر الجاهلي + صدر الإسلام + الأموي</p>
+        </div>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 text-center hover:border-purple-500/50 transition">
+          <p class="text-2xl font-black text-purple-400 mb-1">بنك التريكات</p>
+          <p class="text-xs text-slate-400 font-semibold">12 سؤالاً تفاعلياً + بطاقات الفخاخ</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- المحتوى الرئيسي للموقع -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- ============================================================== -->
+    <!-- 1. قسم النحو كاملاً (GRAMMAR SECTION)                           -->
+    <!-- ============================================================== -->
+    <section id="section-grammar" class="content-section space-y-12">
+      
+      <!-- عنوان القسم مع زر النسخ -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+        <div>
+          <span class="text-sky-400 text-sm font-bold uppercase tracking-wider font-tajawal">الوحدة النحوية الأولى والثانية</span>
+          <h2 class="text-3xl font-black text-white mt-1 flex items-center gap-3">
+            <i class="fa-solid fa-spell-check text-sky-400"></i> علم النحو وتطبيقاته الوزارية بالتفصيل الممل
+          </h2>
+        </div>
+        <button onclick="copySectionContent('section-grammar')" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 hover:text-white border border-slate-700 transition flex items-center gap-2">
+          <i class="fa-solid fa-copy"></i> نسخ ملخص النحو
+        </button>
+      </div>
+
+      <!-- 1.1 كان وأخواتها بالتفصيل الممل -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 hover:border-slate-700 transition shadow-xl space-y-6">
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-black text-lg">١</span>
+            <h3 class="text-2xl font-bold text-white">كان وأخواتها (الناقصة والتامة وتريكات الإعراب)</h3>
+          </div>
+          <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700 font-tajawal">الأفعال الناسخة الناقصة والتامة</span>
+        </div>
+
+        <!-- الفرق بين التام والناقص -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-slate-950 p-6 rounded-2xl border border-sky-900/60 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-2 h-full bg-sky-500"></div>
+            <h4 class="text-lg font-bold text-sky-400 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-circle-dot"></i> الفعل الناقص (يحتاج لخبر)
+            </h4>
+            <p class="text-slate-300 text-sm leading-relaxed mb-4">
+              لا يكتفي بمرفوعه، بل يدخل على الجملة الاسمية فيرفع المبتدأ ويسمى اسمه، وينصب الخبر ويسمى خبره. وإذا حذفته من الجملة <b>يتبقى مبتدأ وخبر تام المعنى</b>.
+            </p>
+            <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300">
+              «كان <span class="text-sky-300 font-bold">الحقُّ</span> <span class="text-emerald-300 font-bold">واضحاً</span>» ← احذف كان: (الحقُّ واضحٌ) جملة اسمية سليمة 100%.
+            </div>
+          </div>
+
+          <div class="bg-slate-950 p-6 rounded-2xl border border-emerald-900/60 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-2 h-full bg-emerald-500"></div>
+            <h4 class="text-lg font-bold text-emerald-400 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check"></i> الفعل التام (يكتفي بفاعله)
+            </h4>
+            <p class="text-slate-300 text-sm leading-relaxed mb-4">
+              يكتفي بمرفوعه لتمام المعنى ويدل على <b>الحدوث والوجود والتحقق</b>، وما بعده يُعرب <b class="text-gold-400">فاعلاً مرفوعاً</b>. وإذا حذفته يختل سياق الكلام ولا تتبقى جملة اسمية.
+            </p>
+            <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300">
+              «اجتهد الطالبُ فكان <span class="text-emerald-300 font-bold">النجاحُ</span>» ← أي وجد أو حدث النجاح (النجاح: فاعل مرفوع بالضمة).
+            </div>
+          </div>
+        </div>
+
+        <!-- أقسام أخوات كان حسب التصرف ونوع ما -->
+        <div>
+          <h4 class="text-base font-bold text-slate-200 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-sky-400"></i> أقسام أخوات كان من حيث التصرف والجمود ونوع (ما):
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <p class="font-bold text-sky-400 text-sm mb-1">١. أفعال تامة التصرف</p>
+              <p class="text-slate-400 mb-2">تأتي في الماضي والمضارع والأمر وتعمل ناقصة وتامة:</p>
+              <p class="text-white font-bold text-sm">كان • أصبح • أضحى • أمسى • بات • ظل • صار</p>
+              <p class="text-slate-400 mt-2">مثال: «كن جميلاً» (الاسم ضمير مستتر تقديره أنت، جميلاً: خبر كان).</p>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <p class="font-bold text-gold-400 text-sm mb-1">٢. أفعال ناقصة التصرف</p>
+              <p class="text-slate-400 mb-2">تأتي في الماضي والمضارع فقط ويشترط أن تسبق بنفي:</p>
+              <p class="text-white font-bold text-sm">ما زال • ما برح • ما انفك • ما فتئ</p>
+              <p class="text-gold-400 font-semibold mt-2">نوع (ما) هنا: <span class="text-white">نافية دائماً</span>.</p>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <p class="font-bold text-rose-400 text-sm mb-1">٣. أفعال جامدة تماماً</p>
+              <p class="text-slate-400 mb-2">تلزم صيغة الماضي فقط:</p>
+              <p class="text-white font-bold text-sm">ليس • ما دام</p>
+              <p class="text-rose-300 font-semibold mt-2">ليس: ناقصة دائماً ولا تأتي تامة أبداً.<br>نوع (ما) في "ما دام": <span class="text-white">مصدرية ظرفية</span>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- مفاتيح استخراج الاسم والخبر بـ (مين وماله) + أنواع الخبر -->
+        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4">
+          <h4 class="text-base font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-key text-gold-400"></i> خريطة المعلم الذكية لاستخراج الاسم والخبر بلا أخطاء:
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+              <span class="text-sky-400 font-bold block mb-1">خطوة (مين / إيه؟) لاستخراج الاسم:</span>
+              <p class="text-slate-300">قف عند الفعل الناسخ واسأل: <b>(مين اللي كان؟ / إيه اللي كان؟)</b> -> الإجابة هي اسم كان، حتى لو كان متأخراً أو ضميراً متصلاً أو مستتراً.</p>
+            </div>
+            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+              <span class="text-emerald-400 font-bold block mb-1">خطوة (ماله؟) لاستخراج الخبر:</span>
+              <p class="text-slate-300">قف عند الاسم الذي استخرجته واسأل: <b>(ماله؟)</b> -> الكلمة أو الجملة التي تجيب على هذا السؤال وتتم المعنى هي الخبر المنصوب.</p>
+            </div>
+          </div>
+          <!-- تفصيل أنواع الخبر الأربعة -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs pt-2">
+            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+              <span class="text-sky-400 font-bold">١. خبر مفرد:</span>
+              <p class="text-slate-400 mt-1">كلمة واحدة ليست فعلاً ولا ظرفاً: «أصبح الجوُّ <span class="text-white font-bold">معتدلاً</span>»</p>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+              <span class="text-emerald-400 font-bold">٢. خبر جملة فعلية:</span>
+              <p class="text-slate-400 mt-1">يبدأ بفعل مضارع أو ماضٍ: «ظل المعلمُ <span class="text-white font-bold">يشرحُ الدرس</span>»</p>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+              <span class="text-gold-400 font-bold">٣. خبر جملة اسمية:</span>
+              <p class="text-slate-400 mt-1">كلمتان الأولى فيها ضمير يعود على الاسم: «كان الطالبُ <span class="text-white font-bold">عطاؤُه وافرٌ</span>»</p>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+              <span class="text-purple-400 font-bold">٤. خبر شبه جملة:</span>
+              <p class="text-slate-400 mt-1">جار ومجرور أو ظرف: «بات العصفورُ <span class="text-white font-bold">فوق الغصن</span>»</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- تريكات كان التامة والجمل المقلوبة وخبر ليس الزائد -->
+        <div class="space-y-3">
+          <h4 class="text-sm font-bold text-gold-400 flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation"></i> تريكات وفخاخ امتحان الوزارة في كان وأخواتها:
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-white block mb-1">١. الجملة المقلوبة (تقديم الخبر شبه الجملة):</b>
+              <p class="text-slate-300 leading-relaxed">
+                إذا جاء بعد كان شبه جملة، فالاسم مؤخر غالباً:
+                <br>«كان في المحكمةِ <span class="text-sky-400 font-bold">قاضٍ</span>» ← قاضٍ: اسم كان مؤخر مرفوع بضمة مقدرة.
+                <br>«أصبح من الضروري <span class="text-emerald-400 font-bold">أن نتعاون</span>» ← المصدر المؤول (أن نتعاون) في محل رفع اسم أصبح مؤخر.
+              </p>
+            </div>
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-white block mb-1">٢. حرف الجر الزائد في خبر (ليس):</b>
+              <p class="text-slate-300 leading-relaxed">
+                تتصل الباء بخبر ليس وتكون زائدة للتوكيد:
+                <br>«ليس المؤمنُ <span class="text-gold-400 font-bold">بخائنٍ</span>» ← الباء حرف جر زائد، وخائن: خبر ليس مجرور لفظاً منصوب محلاً، ونوع الخبر هنا: <b class="text-white">مفرد</b> وليس شبه جملة!
+              </p>
+            </div>
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-white block mb-1">٣. تفرقة (ما زال) بين التمام والنقصان:</b>
+              <p class="text-slate-300 leading-relaxed">
+                • «ما زال الماءُ في الإناء» (بمعنى استمر ولسه موجود) ← ناقصة، الماء: اسم ما زال.
+                <br>• «ما زال الماءُ من الإناء» (بمعنى نفد وانتقل وتلاشى) ← تامة، الماء: فاعل مرفوع.
+              </p>
+            </div>
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-white block mb-1">٤. فعل (غدا) و(يدوم):</b>
+              <p class="text-slate-300 leading-relaxed">
+                • «غدا» إذا جاءت بمعنى صار أو أصبح تعمل عمل كان: «غدا العلمُ ضرورةً» (العلم: اسم غدا، ضرورة: خبرها).
+                <br>• «ما يدوم» بالمضارع تصبح تامة لأن "ما دام" شرط عملها الجمود في صيغة الماضي.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.2 كاد وأخواتها بالتفصيل الممل -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 hover:border-slate-700 transition shadow-xl space-y-6">
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-black text-lg">٢</span>
+            <h3 class="text-2xl font-bold text-white">كاد وأخواتها (المقاربة والرجاء والشروع)</h3>
+          </div>
+          <span class="text-xs bg-gold-400/10 text-gold-400 border border-gold-400/20 px-3 py-1 rounded-full font-bold">الشرط الإجباري: الخبر جملة فعلية مضارعة</span>
+        </div>
+
+        <p class="text-slate-300 text-sm leading-relaxed">
+          تعمل كاد وأخواتها عمل كان فترفع المبتدأ اسماً لها وتنصب الخبر، ولكن بشرطين قطعيين:
+          <br><b>١. أن تؤدي معناها الأصلي (المقاربة أو الرجاء أو الشروع).</b>
+          <br><b>٢. أن يكون خبرها جملة فعلية فعلها مضارع.</b>
+        </p>
+
+        <!-- التقسيمات والدلالات -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span class="text-sky-400 font-bold block mb-1">أفعال المقاربة (قرب وقوع الخبر):</span>
+            <p class="text-white font-bold text-base mb-1">كاد • كَرَب • أَوْشَك</p>
+            <p class="text-slate-400">مثل: «كادت الشمسُ تشرقُ»</p>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span class="text-gold-400 font-bold block mb-1">أفعال الرجاء (تمني ورجاء وقوع الخبر):</span>
+            <p class="text-white font-bold text-base mb-1">عَسَى • حَرَى • اخْلَوْلَق</p>
+            <p class="text-slate-400">مثل: «عسى الكربُ أن ينفرجَ»</p>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span class="text-emerald-400 font-bold block mb-1">أفعال الشروع (البدء الفوري في الخبر):</span>
+            <p class="text-white font-bold text-base mb-1">شرع • بدأ • أخذ • طفق • أنشأ • جعل • هبّ</p>
+            <p class="text-slate-400">مثل: «شرع العالمُ يبتكرُ»</p>
+          </div>
+        </div>
+
+        <!-- جدول أحكام الاقتران والتجريد بأن مع جمل الحفظ الذكية -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-right text-xs sm:text-sm border-collapse bg-slate-950 rounded-2xl overflow-hidden border border-slate-800">
+            <thead class="bg-slate-800 text-slate-200">
+              <tr>
+                <th class="p-3.5 font-bold">الحكم مع (أن)</th>
+                <th class="p-3.5 font-bold">الأفعال</th>
+                <th class="p-3.5 font-bold">سر الحفظ السريع</th>
+                <th class="p-3.5 font-bold">حكم التجريد من (أن)</th>
+                <th class="p-3.5 font-bold">مثال إعرابي</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800">
+              <tr class="hover:bg-slate-900/50 transition">
+                <td class="p-3.5 font-bold text-sky-400">يَقِلّ</td>
+                <td class="p-3.5 text-white font-bold">كاد • كَرَب</td>
+                <td class="p-3.5 text-slate-400">القاف في (يقل) مع الكاف في (كاد وكرب)</td>
+                <td class="p-3.5 text-gold-400 font-bold">يَكْثُر التجريد</td>
+                <td class="p-3.5 text-slate-300">«كاد القطارُ يصلُ» (ويجوز: أن يصل)</td>
+              </tr>
+              <tr class="hover:bg-slate-900/50 transition">
+                <td class="p-3.5 font-bold text-gold-400">يَكْثُر</td>
+                <td class="p-3.5 text-white font-bold">عَسَى • أَوْشَك</td>
+                <td class="p-3.5 text-slate-400">الثاء في (يكثر) مع السين والشين في (عسى وأوشك)</td>
+                <td class="p-3.5 text-sky-400 font-bold">يَقِلّ التجريد</td>
+                <td class="p-3.5 text-slate-300">«عسى اللهُ أن يأتيَ بالفتح»</td>
+              </tr>
+              <tr class="hover:bg-slate-900/50 transition">
+                <td class="p-3.5 font-bold text-emerald-400">يَجِب</td>
+                <td class="p-3.5 text-white font-bold">حَرَى • اخْلَوْلَق</td>
+                <td class="p-3.5 text-slate-400">الجيم في (يجب) مع الحاء والخاء في (حرى واخلولق)</td>
+                <td class="p-3.5 text-rose-400 font-bold">يَمْتَنِع التجريد</td>
+                <td class="p-3.5 text-slate-300">«حرى السلامُ أن يعمَّ» (خطأ كتابتها بلا أن)</td>
+              </tr>
+              <tr class="hover:bg-slate-900/50 transition">
+                <td class="p-3.5 font-bold text-rose-400">يَمْتَنِع</td>
+                <td class="p-3.5 text-white font-bold">أفعال الشروع كافة</td>
+                <td class="p-3.5 text-slate-400">الشروع يدل على الحال و(أن) تجعل الفعل مستقبلاً!</td>
+                <td class="p-3.5 text-emerald-400 font-bold">يَجِب التجريد</td>
+                <td class="p-3.5 text-slate-300">«أخذ الخطيبُ يتكلمُ» (يمتنع اقترانه بأن)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- فخاخ كاد وأخواتها الامتحانية -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+            <span class="text-gold-400 font-bold block mb-1">١. تصرف كاد وأوشك فقط:</span>
+            <p class="text-slate-300">كل أفعال الباب جامدة ما عدا (كاد/يكاد) و(أوشك/يوشك) يعملان في الماضي والمضارع. باقي الأفعال إذا جاءت مضارعة تكون <b>تامة</b> فوراً: «يبدأ المعلم الشرح» (المعلم: فاعل).</p>
+          </div>
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+            <span class="text-gold-400 font-bold block mb-1">٢. عدم التقديم والتأخير:</span>
+            <p class="text-slate-300">كاد وأخواتها لا يجوز فيها تقديم الخبر على الاسم؛ إذا تقدم الخبر بطل عملها تماماً.</p>
+          </div>
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+            <span class="text-gold-400 font-bold block mb-1">٣. المصدر المؤول كفاعل تام:</span>
+            <p class="text-slate-300">إذا بدأت الجملة بـ (عسى / أوشك / اخلولق) وجاء بعدها مباشرة (أن + المضارع)، فالفعل تام والمصدر المؤول في محل رفع فاعل: «عسى أن تكرهوا شيئاً».</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.3 إعمال المشتقات كاملة بالتفصيل الممل -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 hover:border-slate-700 transition shadow-xl space-y-6">
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-black text-lg">٣</span>
+            <h3 class="text-2xl font-bold text-white">إعمال المشتقات العاملة (اسم الفاعل، صيغ المبالغة، اسم المفعول)</h3>
+          </div>
+          <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700 font-tajawal">تعمل عمل الفعل المبني للمعلوم أو المجهول</span>
+        </div>
+
+        <!-- شروط العمل العامة للمشتقات -->
+        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 text-xs sm:text-sm space-y-2">
+          <h4 class="font-bold text-sky-400 text-base">القاعدة الدستورية لشروط إعمال المشتقات الثلاثة:</h4>
+          <p class="text-slate-300 leading-relaxed">
+            <b>١. المقترن بـ (أل):</b> يعمل بلا أي شروط ولا قيود، في الماضي والحاضر والمستقبل («حضر المكرمُ أمسِ ضيفَه» ← ضيفه: مفعول به لأن المشتق محلى بأل).
+            <br><b>٢. المجرد من (أل):</b> يعمل بشرطين متلازمين معاً:
+            <br>&nbsp;&nbsp;• <b>الشرط الأول:</b> أن يدل على الحال أو الاستقبال (ويكون منوناً في المفرد أو ثابتاً نونه في المثنى والجمع).
+            <br>&nbsp;&nbsp;• <b>الشرط الثاني:</b> أن يعتمد على واحد من ستة أمور:
+            (مبتدأ، نفي، استفهام، موصوف، نداء، أو يقع حالاً).
+          </p>
+        </div>
+
+        <!-- المشتقات الثلاثة مع معمولها وطرق إعرابه -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- اسم الفاعل -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-lg font-bold text-sky-400">اسم الفاعل</h4>
+                <span class="text-xs px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-bold">مبني للمعلوم</span>
+              </div>
+              <p class="text-xs text-slate-400 mb-3">
+                <b>صياغته:</b> من الثلاثي على وزن (فَاعِل) مثل: صائم، قاضٍ، ساعٍ.
+                ومن غير الثلاثي: ميم مضمومة وكسر ما قبل الآخر: مُحسِن، مُجتهِد.
+              </p>
+              <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs space-y-1.5">
+                <p class="text-gold-400 font-bold">المعمول وإعرابه:</p>
+                <p class="text-slate-300">• يرفع <b class="text-white">فاعلاً</b> وينصب <b class="text-white">مفعولاً به</b> (أو مفعولين).</p>
+                <p class="text-slate-400">طريقة الحل: استبدله بالمضارع: «أفاهمٌ أخوك الدرسَ؟» ← أيفهم أخوك الدرسَ؟ (أخوك: فاعل سد مسد الخبر، الدرس: مفعول به).</p>
+              </div>
+            </div>
+            <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-800 text-xs text-slate-400">
+              تريكة: المنقوص (قاضٍ) تحذف ياؤه نكرة في الرفع والجر، وتثبت نصباً (قاضياً) أو مع (أل).
+            </div>
+          </div>
+
+          <!-- صيغ المبالغة الخمسة -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-lg font-bold text-gold-400">صيغ المبالغة</h4>
+                <span class="text-xs px-2 py-0.5 rounded bg-gold-400/20 text-gold-300 font-bold">5 أوزان قياسية</span>
+              </div>
+              <div class="grid grid-cols-2 gap-1 text-xs font-bold text-slate-200 mb-3 text-center">
+                <span class="bg-slate-900 p-1.5 rounded border border-slate-800">مِفْعَال (مِعطاء)</span>
+                <span class="bg-slate-900 p-1.5 rounded border border-slate-800">فَعُول (صَبور)</span>
+                <span class="bg-slate-900 p-1.5 rounded border border-slate-800">فَعِيل (رَحيم)</span>
+                <span class="bg-slate-900 p-1.5 rounded border border-slate-800">فَعِل (حَذِر)</span>
+                <span class="bg-slate-900 p-1.5 rounded border border-slate-800 col-span-2">فَعَّال (غَفّار)</span>
+              </div>
+              <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs space-y-1.5">
+                <p class="text-gold-400 font-bold">المعمول وإعرابه:</p>
+                <p class="text-slate-300">تعمل نفس عمل اسم الفاعل تماماً وبنفس شروطه: «اللهُ غفورٌ <span class="text-white font-bold">ذنوبَ</span> العباد» (ذنوب: مفعول به لصيغة المبالغة).</p>
+              </div>
+            </div>
+            <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-800 text-xs text-slate-400">
+              تريكة: صيغ المبالغة تدل على الكثرة والشدة والمبالغة في حدوث الفعل.
+            </div>
+          </div>
+
+          <!-- اسم المفعول -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-lg font-bold text-emerald-400">اسم المفعول</h4>
+                <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">مبني للمجهول</span>
+              </div>
+              <p class="text-xs text-slate-400 mb-3">
+                <b>صياغته:</b> من الثلاثي (مَفْعُول) كـ مضروب، ومن المعتل: مَقُول، مَبِيع، مَدْعُوّ.
+                من غير الثلاثي: ميم مضمومة وفتح ما قبل الآخر: مُحترَم، مُستخرَج.
+              </p>
+              <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs space-y-1.5">
+                <p class="text-emerald-400 font-bold">المعمول الذهبي:</p>
+                <p class="text-slate-300">يرفع دائماً <b class="text-white">نائب فاعل</b>: «أمقبولٌ <span class="text-gold-400 font-bold">رأيُ</span> الأحمق؟» (رأي: نائب فاعل سد مسد الخبر).</p>
+                <p class="text-slate-400">وإذا كان الفعل ينصب مفعولين ينصب مفعولاً ثانياً: «أممنوحٌ المتفوقُ <span class="text-emerald-400 font-bold">جائزةً</span>؟»</p>
+              </div>
+            </div>
+            <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-800 text-xs text-slate-400">
+              تريكة كبرى: إذا فقد التنوين أو حذفت نون المثنى والجمع، يعرب المعمول مضافاً إليه!
+            </div>
+          </div>
+        </div>
+
+        <!-- مقارنة التنوين وحذف النون بين الإعمال والإضافة -->
+        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs space-y-2">
+          <p class="text-gold-400 font-bold text-sm">مقارنة امتحان الوزارة: متى يكون المعمول (مفعول به) ومتى يكون (مضافاً إليه)؟</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <span class="text-emerald-400 font-bold block mb-1">المشتق عامل (تنوين أو نون موجودة):</span>
+              <p>• «المعلمُ شارحٌ <span class="text-white font-bold">الدرسَ</span>» ← الدرس: مفعول به منصوب (لوجود التنوين).</p>
+              <p>• «حضر مؤدّون <span class="text-white font-bold">الواجبَ</span>» ← الواجب: مفعول به منصوب (لثبوت نون الجمع).</p>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <span class="text-rose-400 font-bold block mb-1">المشتق غير عامل (حُذف التنوين أو النون للإضافة):</span>
+              <p>• «المعلمُ شارحُ <span class="text-white font-bold">الدرسِ</span>» ← الدرس: مضاف إليه مجرور (لحذف التنوين).</p>
+              <p>• «حضر مؤدّو <span class="text-white font-bold">الواجبِ</span>» ← الواجب: مضاف إليه مجرور (لحذف نون الجمع للإضافة).</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 2. قسم البلاغة وعلم البيان (RHETORIC SECTION)                  -->
+    <!-- ============================================================== -->
+    <section id="section-rhetoric" class="content-section hidden space-y-12">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+        <div>
+          <span class="text-gold-400 text-sm font-bold uppercase tracking-wider font-tajawal">علم البيان والمحسنات والعلاقات</span>
+          <h2 class="text-3xl font-black text-white mt-1 flex items-center gap-3">
+            <i class="fa-solid fa-feather-pointed text-gold-400"></i> البلاغة المتكاملة من الصفر حتى التقفيل
+          </h2>
+        </div>
+        <button onclick="copySectionContent('section-rhetoric')" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 hover:text-white border border-slate-700 transition flex items-center gap-2">
+          <i class="fa-solid fa-copy"></i> نسخ ملخص البلاغة
+        </button>
+      </div>
+
+      <!-- 2.1 التعبير الحقيقي والتعبير المجازي -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+          <span class="text-xs px-2.5 py-1 rounded bg-slate-800 text-slate-400 font-bold">١. التعبير الحقيقي</span>
+          <h3 class="text-xl font-bold text-white mt-3 mb-2">استعمال الألفاظ في معانيها الأصلية</h3>
+          <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+            اللفظ يؤدي المعنى الواقعي الحرفي دون أدنى خيال، مثل تقارير الأخبار والعلوم:
+          </p>
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+            <p>• «نهر النيل أطول أنهار العالم»</p>
+            <p>• «الجندي شجاع في أرض المعركة»</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+          <span class="text-xs px-2.5 py-1 rounded bg-gold-400/20 text-gold-400 font-bold">٢. التعبير المجازي (الخيالي)</span>
+          <h3 class="text-xl font-bold text-white mt-3 mb-2">استعمال الألفاظ في غير معانيها الأصلية</h3>
+          <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+            استعمال اللفظ في معنى خيالي بديل لعلاقة المشابهة أو غيرها، وهو روح الأدب والشعر:
+          </p>
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+            <p>• «نطق القلمُ بالحق وسالت كلماته دماً»</p>
+            <p>• «الجندي أسد يفترس أعداء الوطن»</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.2 التشبيه المفرد وأنواعه وصور التشبيه البليغ الخمسة -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <span class="w-9 h-9 rounded-xl bg-gold-400/20 text-gold-400 flex items-center justify-center font-black text-lg">١</span>
+          <h3 class="text-2xl font-bold text-white">التشبيه المفرد وصور البليغ الخمسة</h3>
+        </div>
+
+        <!-- أركان التشبيه الأربعة -->
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs sm:text-sm">
+          <p class="text-sky-400 font-bold mb-1">أركان التشبيه الأربعة ومكوناته:</p>
+          <p class="text-slate-300 leading-relaxed">
+            ١. <b class="text-white">المشبه</b> (ركن أصيل) &nbsp;|&nbsp;
+            ٢. <b class="text-white">المشبه به</b> (ركن أصيل) &nbsp;|&nbsp;
+            ٣. <b class="text-gold-400">أداة التشبيه</b> (حرف: كـ، كأن | اسم: مثل، شبه | فعل: يشبه، يماثل) &nbsp;|&nbsp;
+            ٤. <b class="text-emerald-400">وجه الشبه</b> (الصفة المشتركة وتأتي غالباً جاراً ومجروراً أو تمييزاً).
+          </p>
+        </div>
+
+        <!-- أنواع التشبيه المفرد الثلاثة -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span class="text-sky-400 font-bold">المفصل (٤ من ٤):</span>
+            <p class="text-slate-300 mt-1">ذُكرت فيه جميع الأركان دون حذف:</p>
+            <p class="text-white font-bold mt-1">«الجندي كـ الأسد في الشجاعة»</p>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span class="text-gold-400 font-bold">المجمل (٣ من ٤):</span>
+            <p class="text-slate-300 mt-1">حُذفت الأداة أو وجه الشبه:</p>
+            <p class="text-white font-bold mt-1">«الجندي كالأسد» أو «الجندي أسد في الشجاعة»</p>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-xl border border-emerald-500/50 bg-emerald-950/10">
+            <span class="text-emerald-400 font-bold">البليغ (٢ من ٤):</span>
+            <p class="text-slate-300 mt-1">المشبه والمشبه به فقط (أقوى التشبيهات):</p>
+            <p class="text-white font-bold mt-1">«العلمُ نورٌ» • «الجندي أسدٌ»</p>
+          </div>
+        </div>
+
+        <!-- صور التشبيه البليغ الخمسة وطريقة الكشف بـ (مثل) -->
+        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <h4 class="text-sm font-bold text-gold-400">الصور الخمس التي يأتي عليها التشبيه البليغ (امتحان الوزارة):</h4>
+            <span class="text-xs bg-slate-900 px-3 py-1 rounded-full text-slate-300 border border-slate-800">طريقة الكشف: ضع كلمة (مثل / زي) بين الكلمتين</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <b class="text-sky-400 block mb-1">١. المبتدأ والخبر:</b>
+              <p class="text-slate-300">«العلمُ نورٌ» أو مع أخوات إن وكان: «إنك شمسٌ»</p>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <b class="text-sky-400 block mb-1">٢. الحال وصاحبها:</b>
+              <p class="text-slate-300">«وقف الجيشُ صخرةً أمام غارات الأعداء»</p>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <b class="text-sky-400 block mb-1">٣. المفعول المطلق:</b>
+              <p class="text-slate-300">«انقض الطيارُ انقضاضَ الصقرِ الجارح»</p>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <b class="text-sky-400 block mb-1">٤. المضاف والمضاف إليه:</b>
+              <p class="text-slate-300">«ارتدينا ثوبَ العافيةِ» (العافية كالثوب)، «ظلام الجهل»</p>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <b class="text-sky-400 block mb-1">٥. الجار والمجرور:</b>
+              <p class="text-slate-300">«قال كلاماً من ذهب» (أي كلامه مثل الذهب)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.3 التشبيه المركب (التمثيلي والضمني) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <span class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-black text-lg">٢</span>
+          <h3 class="text-2xl font-bold text-white">التشبيه المركب (التمثيلي والضمني)</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-2">
+            <h4 class="text-base font-bold text-purple-400">التشبيه التمثيلي (هيئة بهيئة + أداة)</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              تشبيه حالة مركبة بحالة مركبة وصورة متعددة الأجزاء بصورة أخرى مع وجود أداة تشبيه واضحة:
+            </p>
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs text-slate-200">
+              «مثل الذين حملوا التوراة ثم لم يحملوها <span class="text-purple-400 font-bold">كمثل الحمار</span> يحمل أسفاراً»
+            </div>
+          </div>
+
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-2">
+            <h4 class="text-base font-bold text-rose-400">التشبيه الضمني (يفهم ضمناً بلا أداة)</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              لا يُصرّح فيه بالتشبيه ولا توجد أداة، بل يفهم من سياق الكلام، ويأتي الشطر الثاني غالباً <b class="text-white">حكمة وبرهاناً مستقلاً</b> يؤكد الشطر الأول:
+            </p>
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs text-slate-200">
+              «من يهن يسهل الهوان عليه ... <span class="text-rose-400 font-bold">ما لجرحٍ بميتٍ إيلامُ</span>»
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.4 الاستعارة وأسرار الجمال الصارمة -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- الاستعارة -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-masks-theater text-sky-400"></i> الاستعارة (مكنية وتصريحية)
+          </h3>
+          <p class="text-slate-300 text-xs leading-relaxed">
+            الاستعارة هي في جوهرها تشبيه بليغ حُذف أحد طرفيه:
+          </p>
+
+          <div class="space-y-3 text-xs">
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <b class="text-sky-400 block mb-1">الاستعارة المكنية (+ المشبه موجود / - المشبه به محذوف):</b>
+              <p class="text-slate-300">يُحذف المشبه به ويُترك شيء من لوازمه وصفاته تدل عليه:
+              <br>«وافترس الجنديُّ الأعداء» ← شبّه الجندي بوحش، حذف الوحش وترك صفة (افترس).</p>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <b class="text-gold-400 block mb-1">الاستعارة التصريحية (- المشبه محذوف / + المشبه به مصرح به):</b>
+              <p class="text-slate-300">تأتي غالباً في كلمة واحدة، واسأل نفسك: (ما المقصود بالكلمة؟):
+              <br>«عبر أسودُنا قناة السويس» ← شبّه الجنود بالأسود، حذف الجنود وصرح بلفظ (الأسود).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- أسرار الجمال الصارمة -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 flex flex-col justify-between">
+          <div>
+            <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles text-gold-400"></i> أسرار الجمال البلاغي بدقة
+            </h3>
+            <p class="text-slate-300 text-xs mb-3">القواعد الصارمة المحددة لسر جمال الصورة:</p>
+
+            <div class="space-y-2 text-xs">
+              <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                <span class="text-sky-400 font-bold block mb-0.5">١. التشخيص:</span>
+                <p class="text-slate-300">تشبيه أي شيء غير عاقل (مادي أو معنوي) بـ <b class="text-white">إنسان عاقل</b>: «حدّثني التاريخ عن أمجادنا»</p>
+              </div>
+              <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                <span class="text-gold-400 font-bold block mb-0.5">٢. التجسيم:</span>
+                <p class="text-slate-300">تشبيه الشيء المعنوي المجرد بـ <b class="text-white">شيء مادي ملموس</b>: «الصحة تاج على الرؤوس»</p>
+              </div>
+              <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                <span class="text-emerald-400 font-bold block mb-0.5">٣. التوضيح:</span>
+                <p class="text-slate-300">مادي بمادي («الجندي أسد»)، معنوي بمعنوي («العدل كالسلام»)، أو عاقل بمادي. وسر جمال التمثيلي والضمني دائماً هو <b>التوضيح</b>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 2.5 المحسنات البديعية وعلاقات الجمل -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+        <h3 class="text-2xl font-bold text-white flex items-center gap-3">
+          <i class="fa-solid fa-music text-purple-400"></i> المحسنات البديعية وعلاقات الجمل بين النصوص
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
+          
+          <!-- المحسنات اللفظية والمعنوية -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <h4 class="font-bold text-sky-400 text-base">المحسنات البديعية:</h4>
+            <div class="space-y-2 text-xs">
+              <p><b>• التصريع:</b> اتفاق نهاية شطري البيت الأول في القصيدة بنفس الحرف وضبطه (شعر فقط).</p>
+              <p><b>• حسن التقسيم:</b> تقطيع البيت الشعري إلى جمل متساوية الإيقاع (شعر فقط).</p>
+              <p><b>• السجع:</b> توافق فواصل ونهايات الجمل في الحرف الأخير (نثر فقط).</p>
+              <p><b>• الازدواج:</b> توازن الجمل النثرية وتساويها في الطول والنغمة (نثر فقط).</p>
+              <p><b>• الجناس:</b> تماثل اللفظين مع اختلاف المعنى (تام: ساعة وساعة | ناقص: عَبْرة وعِبْرة، حسام وسهام).</p>
+              <p><b>• الطباق والمقابلة:</b> طباق إيجاب (الليل والنهار)، طباق سلب (يعلم ولا يعلم). والمقابلة تضاد بين جملتين بالترتيب.</p>
+            </div>
+          </div>
+
+          <!-- علاقات الجمل -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <h4 class="font-bold text-gold-400 text-base">علاقات الجمل بما قبلها (مفاتيح الحل):</h4>
+            <div class="space-y-2 text-xs">
+              <p><b>• التعليل:</b> اسأل قبله بـ <b>(لماذا؟)</b> أو ضع كلمة (لأن / علشان / لكي).</p>
+              <p><b>• النتيجة:</b> ضع قبله <b>(فترتب على ذلك)</b>، وكل جواب شرط أو جواب طلب هو نتيجة حتمية.</p>
+              <p><b>• التفصيل بعد إجمال:</b> ذكر لفظ مبهم/مجمل ثم سرد أجزائه: «بني الإسلام على خمس: شهادة أن...»</p>
+              <p><b>• التوضيح بعد إبهام:</b> وضع تعريف اصطلاحي أو تفسير لجملة سابقة غامضة.</p>
+              <p><b>• الاستدراك:</b> يبدأ بـ <b>(لكن)</b> لمنع الفهم الخاطئ واللبس.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 3. قسم تاريخ الأدب كاملاً (LITERATURE SECTION)                 -->
+    <!-- ============================================================== -->
+    <section id="section-literature" class="content-section hidden space-y-12">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+        <div>
+          <span class="text-emerald-400 text-sm font-bold uppercase tracking-wider font-tajawal">تاريخ الأدب العربي كاملاً</span>
+          <h2 class="text-3xl font-black text-white mt-1 flex items-center gap-3">
+            <i class="fa-solid fa-landmark text-emerald-400"></i> العصور الأدبية الثلاثة وسمات الشعر والنثر
+          </h2>
+        </div>
+        <button onclick="copySectionContent('section-literature')" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 hover:text-white border border-slate-700 transition flex items-center gap-2">
+          <i class="fa-solid fa-copy"></i> نسخ ملخص الأدب
+        </button>
+      </div>
+
+      <!-- 3.1 العصر الجاهلي -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-2xl bg-amber-500/20 text-gold-400 flex items-center justify-center font-black text-xl">١</span>
+          <div>
+            <h3 class="text-2xl font-bold text-white">العصر الجاهلي (ما قبل الإسلام بـ ١٥٠ عاماً)</h3>
+            <p class="text-xs text-slate-400">التسمية، البيئة، المعلقات، بناء القصيدة، وفنون النثر</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs sm:text-sm">
+          
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-2">
+            <h4 class="font-bold text-gold-400 text-base">سبب التسمية والبيئة والأسواق</h4>
+            <p class="text-slate-300 leading-relaxed">
+              سُمي بالجاهلي نسبة إلى <b>الجهالة</b> (فعل الشيء القبيح عن طيش وإرادة وعلم بقبحه) وليس الجهل الذي هو ضد العلم.
+              <br><b>أشهر الأسواق الأدبية:</b> عكاظ، ذو المجاز، ومجنة؛ وكانت معارض للشعر والتجارة والمفاخرة.
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-2">
+            <h4 class="font-bold text-sky-400 text-base">منهج بناء القصيدة الجاهلية</h4>
+            <p class="text-slate-300 leading-relaxed">
+              لم تعرف القصيدة وحدة الموضوع بل تعددت أغراضها بالترتيب التالي:
+              <br>١. البدء بالغزل وبكاء الأطلال (الديار المتهدمة).
+              <br>٢. الوصف (الناقة، الرحلة، الفرس، معالم الصحراء).
+              <br>٣. الغرض الرئيس (مدح، هجاء، رثاء، فخر).
+              <br>٤. الختام بالحكمة الصادقة.
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-2">
+            <h4 class="font-bold text-emerald-400 text-base">المعلقات وشعراؤها</h4>
+            <p class="text-slate-300 leading-relaxed">
+              قصائد طوال اختيرت لجودتها ورصانتها؛ وأرجح أسباب التسمية: <b>سرعة تعلقها بأذهان الناس وحفظهم</b>.
+              <br><b>الشعراء السبعة:</b> امرؤ القيس، طرفة بن العبد، زهير بن أبي سلمى، لبيد بن ربيعة، عمرو بن كلثوم، عنترة بن شداد، والحارث بن حلزة. (وزاد بعضهم: النابغة، الأعشى، وعبيد بن الأبرص).
+            </p>
+          </div>
+
+        </div>
+
+        <!-- فنون النثر الجاهلي الأربعة بالتفصيل -->
+        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+          <h4 class="font-bold text-white text-base">فنون النثر في العصر الجاهلي الأربعة:</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+            <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-gold-400 block mb-1">١. الوصايا:</b>
+              <p class="text-slate-300">قول حكيم صادر عن مجرب يوجهه لمن يحب؛ وتتكون من مقدمة وموضوع وخاتمة. أشهرها: وصية أمامة بنت الحارث لابنتها قبل الزواج.</p>
+            </div>
+            <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-gold-400 block mb-1">٢. الخطابة:</b>
+              <p class="text-slate-300">فن مخاطبة الجماهير لجذب انتباههم بكلام موجز بليغ بهدف الإقناع والإمتاع. أشهر الخطباء: قس بن ساعدة الإيادي، وأكثم بن صيفي.</p>
+            </div>
+            <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-gold-400 block mb-1">٣. الحِكَم:</b>
+              <p class="text-slate-300">خلاصة تجارب ومواقف حياتية عميقة بعبارات موجزة ذات جمال في الصياغة وإيجاز في اللفظ.</p>
+            </div>
+            <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-gold-400 block mb-1">٤. الأمثال:</b>
+              <p class="text-slate-300">أقوال موجزة سارت بين الناس، ولها: <b>مورد</b> (القصة الأصلية التي قيل فيها أول مرة) و<b>مضرب</b> (الموقف المشابه الجديد). مثل: «على أهلها جنت براقش».</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.2 عصر صدر الإسلام والعصر الأموي -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
+        
+        <!-- عصر صدر الإسلام -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">٢</span>
+            <h3 class="text-xl font-bold text-white">عصر صدر الإسلام (١ هـ - ٤٠ هـ)</h3>
+          </div>
+
+          <div class="space-y-3 text-xs text-slate-300">
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-emerald-400 block mb-1">سمات الشعر وأثر القرآن والحديث:</b>
+              تهذيب الألفاظ ومحاكاة ألفاظ القرآن الكريم، والبعد عن خشونة الجاهلية وغريب الألفاظ، وتوحيد الأمة تحت راية العقيدة.
+            </div>
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-emerald-400 block mb-1">الأغراض الشعرية المستحدثة والمندثرة:</b>
+              • <span class="text-white font-bold">استحدث:</span> شعر الفتوحات والمغازي، والدفاع عن النبي ﷺ والإسلام (حسان بن ثابت وكعب بن مالك).
+              <br>• <span class="text-rose-300 font-bold">اندثر وحُرم:</span> الغزل الفاحش، الهجاء القبلي المقذع، والفخر بالعصبية، ووصف الخمر.
+            </div>
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-emerald-400 block mb-1">ازدهار النثر وظهور الرسائل:</b>
+              قويت الخطابة للحاجة إليها في الجهاد وحروب الردة. و<b>ظهر فن الرسائل</b> استجابة لاتساع الدولة وحاجة النبي والخلفاء لمكاتبة الملوك والولاة.
+            </div>
+          </div>
+        </div>
+
+        <!-- العصر الأموي -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">٣</span>
+            <h3 class="text-xl font-bold text-white">العصر الأموي (٤١ هـ - ١٣٢ هـ)</h3>
+          </div>
+
+          <div class="space-y-3 text-xs text-slate-300">
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-purple-400 block mb-1">أسباب ازدهار الأدب والأغراض المستحدثة:</b>
+              تعدد الأحزاب السياسية والصراعات، اتساع الفتوحات، ووقت الفراغ.
+              <br>• <span class="text-white font-bold">الشعر السياسي:</span> عبر عن الأحزاب المتنافسة (الخوارج، الشيعة، الأمويون، الزبيريون).
+              <br>• <span class="text-white font-bold">شعر النقائض:</span> معارك شعرية امتزج فيها الفخر بالهجاء بين الثلاثي: (جرير والفرزدق والأخطل).
+            </div>
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-purple-400 block mb-1">تطور شعر الغزل بنوعيه:</b>
+              • <b>الغزل العذري (العفيف):</b> صادق يصور الطهارة والألم (جميل بثينة، قيس بن الملوح).
+              <br>• <b>الغزل الحضري (الصريح):</b> يصف مفاتن المرأة الحسية (عمر بن أبي ربيعة).
+            </div>
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <b class="text-purple-400 block mb-1">ازدهار الكتابة وديوان الرسائل:</b>
+              نشأ ديوان الرسائل ورائده <b>عبد الحميد الكاتب</b> الذي وضع قواعد الكتابة. وأنواع الرسائل ثلاثة: <b class="text-white">ديوانية</b> (رسمية)، <b class="text-white">إخوانية</b> (بين الأصدقاء)، و<b class="text-white">دينية</b> (مواعظ).
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 4. كبسولة التريكات وفخاخ الامتحانات (TRICKS SECTION)            -->
+    <!-- ============================================================== -->
+    <section id="section-tricks" class="content-section hidden space-y-8">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+        <div>
+          <span class="text-gold-400 text-sm font-bold uppercase tracking-wider font-tajawal">ملاحظات لا يخرج عنها أي امتحان</span>
+          <h2 class="text-3xl font-black text-white mt-1 flex items-center gap-3">
+            <i class="fa-solid fa-wand-magic-sparkles text-gold-400"></i> كبسولة فخاخ الامتحانات والتريكات الإعرابية
+          </h2>
+        </div>
+        <span class="text-xs text-slate-400 font-tajawal">انقر على أي كبسولة لقراءة التفصيل التام</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <!-- كبسولة 1 -->
+        <div class="trick-card bg-slate-900 border border-slate-800 hover:border-gold-400/50 rounded-2xl p-5 cursor-pointer transition shadow-lg" onclick="toggleTrick(this)">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-bolt text-gold-400"></i> ١. فخ التنوين في معمول المشتق العامل
+            </h4>
+            <i class="fa-solid fa-chevron-down text-slate-500 text-sm transition-transform duration-200"></i>
+          </div>
+          <div class="trick-content hidden mt-4 pt-4 border-t border-slate-800 text-xs sm:text-sm text-slate-300 space-y-2">
+            <p>التنوين هو رخصة الإعمال؛ المشتق المنون عامل وما بعده مفعول به أو فاعل، أما غير المنون فغير عامل ومعموله مضاف إليه:</p>
+            <p class="text-emerald-300 font-bold">• «المعلمُ شارحٌ <span class="text-white">الدرسَ</span>» ← الدرسَ: مفعول به منصوب لوجود التنوين.</p>
+            <p class="text-sky-300 font-bold">• «المعلمُ شارحُ <span class="text-gold-400">الدرسِ</span>» ← الدرسِ: مضاف إليه مجرور لغياب التنوين.</p>
+          </div>
+        </div>
+
+        <!-- كبسولة 2 -->
+        <div class="trick-card bg-slate-900 border border-slate-800 hover:border-gold-400/50 rounded-2xl p-5 cursor-pointer transition shadow-lg" onclick="toggleTrick(this)">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-bolt text-gold-400"></i> ٢. فخ حذف نون المثنى وجمع المذكر السالم
+            </h4>
+            <i class="fa-solid fa-chevron-down text-slate-500 text-sm transition-transform duration-200"></i>
+          </div>
+          <div class="trick-content hidden mt-4 pt-4 border-t border-slate-800 text-xs sm:text-sm text-slate-300 space-y-2">
+            <p>نون التثنية والجمع تعادل التنوين في المفرد تماماً:</p>
+            <p class="text-emerald-300 font-bold">• «حضر مؤدّون <span class="text-white">الواجبَ</span>» ← نون الجمع موجودة فالمشتق عامل، والواجب: مفعول به منصوب.</p>
+            <p class="text-rose-300 font-bold">• «حضر مؤدّو <span class="text-gold-400">الواجبِ</span>» ← حُذفت النون للإضافة فالواجب: مضاف إليه مجرور.</p>
+          </div>
+        </div>
+
+        <!-- كبسولة 3 -->
+        <div class="trick-card bg-slate-900 border border-slate-800 hover:border-gold-400/50 rounded-2xl p-5 cursor-pointer transition shadow-lg" onclick="toggleTrick(this)">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-bolt text-gold-400"></i> ٣. فخ أفعال الشروع التامة والناقصة
+            </h4>
+            <i class="fa-solid fa-chevron-down text-slate-500 text-sm transition-transform duration-200"></i>
+          </div>
+          <div class="trick-content hidden mt-4 pt-4 border-t border-slate-800 text-xs sm:text-sm text-slate-300 space-y-2">
+            <p>انظر لما بعد الاسم؛ هل يوجد فعل مضارع؟</p>
+            <p class="text-sky-300 font-bold">• «بدأ المعلمُ <span class="text-emerald-300">يشرح</span>» ← يوجد مضارع: الفعل ناقص، والمعلم: اسم بدأ مرفوع.</p>
+            <p class="text-gold-400 font-bold">• «بدأ المعلمُ <span class="text-white">الشرحَ</span>» ← لا يوجد مضارع: الفعل تام، والمعلم: فاعل مرفوع، والشرح: مفعول به منصوب.</p>
+          </div>
+        </div>
+
+        <!-- كبسولة 4 -->
+        <div class="trick-card bg-slate-900 border border-slate-800 hover:border-gold-400/50 rounded-2xl p-5 cursor-pointer transition shadow-lg" onclick="toggleTrick(this)">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-bolt text-gold-400"></i> ٤. فخ المصدر المؤول بعد عسى وأوشك
+            </h4>
+            <i class="fa-solid fa-chevron-down text-slate-500 text-sm transition-transform duration-200"></i>
+          </div>
+          <div class="trick-content hidden mt-4 pt-4 border-t border-slate-800 text-xs sm:text-sm text-slate-300 space-y-2">
+            <p>إذا بدأت الجملة بـ (عسى / أوشك / اخلولق) وجاء بعدها مباشرة (أن + الفعل المضارع) دون اسم يفصل بينهما، فإن الفعل هنا **تام** والمصدر المؤول في محل رفع فاعل:</p>
+            <p class="text-white font-bold">«وعسى أن تكرهوا شيئاً وهو خيرٌ لكم» ← (أن تكرهوا): مصدر مؤول في محل رفع فاعل للفعل التام (عسى).</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 5. اختبار ليلة الامتحان التفاعلي (QUIZ SECTION)                 -->
+    <!-- ============================================================== -->
+    <section id="section-quiz" class="content-section hidden space-y-8">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+        <div>
+          <span class="text-emerald-400 text-sm font-bold uppercase tracking-wider font-tajawal">محاكاة مواصفات الامتحان الوزاري</span>
+          <h2 class="text-3xl font-black text-white mt-1 flex items-center gap-3">
+            <i class="fa-solid fa-award text-emerald-400"></i> اختبار ليلة الامتحان التفاعلي (١٢ سؤالاً شاملاً)
+          </h2>
+        </div>
+        <div id="quizScoreBox" class="hidden px-5 py-2.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-2xl font-bold text-sm">
+          النتيجة النهائية: <span id="quizScore">0</span> من ١٢
+        </div>
+      </div>
+
+      <!-- حاوية الأسئلة المولدة ديناميكياً -->
+      <div id="quizContainer" class="space-y-6"></div>
+
+      <!-- أزرار الإرسال والإعادة -->
+      <div class="flex items-center justify-between pt-6 border-t border-slate-800">
+        <button onclick="submitQuiz()" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold shadow-lg shadow-emerald-600/25 transition flex items-center gap-2">
+          <i class="fa-solid fa-check-double"></i> تصحيح الاختبار وإظهار النتيجة والتفسير
+        </button>
+        <button onclick="resetQuiz()" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition">
+          <i class="fa-solid fa-rotate-right ml-1"></i> إعادة المحاولة من البداية
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- التذييل (Footer) -->
+  <footer class="mt-20 border-t border-slate-800 bg-royal-950 py-12 text-slate-400 text-xs sm:text-sm no-print">
+    <div class="max-w-4xl mx-auto px-4 space-y-6 font-tajawal text-center">
+      
+      <!-- بطاقة الرسالة الخاصة والملاحظة -->
+      <div class="bg-gradient-to-br from-slate-900/90 to-royal-900 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden text-right">
+        <div class="absolute -top-12 -left-12 w-32 h-32 bg-gold-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-gold-400/10 border border-gold-400/30 flex items-center justify-center shrink-0 text-gold-400 text-xl">
+            <i class="fa-solid fa-heart"></i>
+          </div>
+          <div class="space-y-3 flex-1">
+            <p class="text-base sm:text-lg font-bold text-slate-100 leading-relaxed">
+              الموقع ده معمول ليكم، لأني حاسس إننا كلنا تايهين وحبيت أساعد ولو بجزء بسيط، وأتمنى دعوة حلوة منكم.
+            </p>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold text-xs sm:text-sm">
+              <i class="fa-solid fa-circle-exclamation text-amber-400"></i>
+              <span>ملحوظة: لازم تكون مراجع من مصدر خارجي موثوق الأول.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- بيانات الإعداد والمطور -->
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-4 border-t border-slate-800/80 text-xs font-semibold">
+        <span dir="ltr" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300">
+          <i class="fa-solid fa-book-bookmark text-sky-400"></i>
+          Information gathered by <strong class="text-white font-bold">Abdelrahman Abdallah</strong>
+        </span>
+      </div>
+
+      <p class="text-slate-500 text-xs pt-2">
+        الموسوعة الرقمية لمراجعة اللغة العربية • الصف الأول الثانوي (الفصل الدراسي الأول)
+      </p>
+
+    </div>
+  </footer>
+
+  <!-- الأكواد البرمجية التفاعلية (JS) -->
+  <script>
+    // -----------------------------------------------------------------
+    // 1. التنقل بين التبويبات (Tabs Switcher)
+    // -----------------------------------------------------------------
+    function switchTab(tabId) {
+      document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
+      const targetSec = document.getElementById('section-' + tabId);
+      if (targetSec) {
+        targetSec.classList.remove('hidden');
+        window.scrollTo({ top: targetSec.offsetTop - 100, behavior: 'smooth' });
+      }
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.dataset.target === tabId) {
+          btn.className = "tab-btn px-4 py-2 rounded-xl text-sm font-bold text-sky-400 bg-sky-950/70 border border-sky-800/60 transition flex items-center gap-2";
+        } else {
+          btn.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-2";
+        }
+      });
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    // -----------------------------------------------------------------
+    // 2. شريط تقدم القراءة (Scroll Progress)
+    // -----------------------------------------------------------------
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height);
+      document.getElementById('scrollProgress').style.transform = `scaleX(${scrolled})`;
+    });
+
+    // -----------------------------------------------------------------
+    // 3. البحث الفوري (Instant Search)
+    // -----------------------------------------------------------------
+    function handleSearch() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      filterByQuery(q);
+    }
+    function handleSearchMobile(val) {
+      filterByQuery(val.trim().toLowerCase());
+    }
+    function filterByQuery(query) {
+      if (!query) return;
+      document.querySelectorAll('.content-section').forEach(s => s.classList.remove('hidden'));
+      const elements = document.querySelectorAll('h3, h4, p, td, b');
+      for (let el of elements) {
+        if (el.textContent.toLowerCase().includes(query)) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          break;
+        }
+      }
+    }
+
+    // -----------------------------------------------------------------
+    // 4. الأكورديون لبطاقات التريكات (Tricks Toggle)
+    // -----------------------------------------------------------------
+    function toggleTrick(card) {
+      const content = card.querySelector('.trick-content');
+      const icon = card.querySelector('.fa-chevron-down');
+      content.classList.toggle('hidden');
+      if (icon) {
+        icon.classList.toggle('rotate-180');
+      }
+    }
+
+    // -----------------------------------------------------------------
+    // 5. الإشعارات والنسخ (Toast & Clipboard)
+    // -----------------------------------------------------------------
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.textContent = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+
+    function copySectionContent(secId) {
+      const sec = document.getElementById(secId);
+      if (!sec) return;
+      const temp = document.createElement('textarea');
+      temp.value = sec.innerText;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      showToast('تم نسخ محتوى القسم بالكامل بنجاح!');
+    }
+
+    // -----------------------------------------------------------------
+    // 6. بنك أسئلة الاختبار التفاعلي (12 سؤال وزاري شامل)
+    // -----------------------------------------------------------------
+    const quizData = [
+      {
+        q: "١. قال تعالى: ﴿أَلَا إِلَى اللَّهِ تَصِيرُ الْأُمُورُ﴾. نوع الفعل (تصير) وإعراب كلمة (الأمور):",
+        options: [
+          "ناقص، والأمور: اسم تصير مرفوع",
+          "تام، والأمور: فاعل مرفوع بالضمة",
+          "تام، والأمور: مفعول به منصوب بالفتحة",
+          "ناقص، وخبره شبه جملة محذوف"
+        ],
+        correct: 1,
+        feedback: "الفعل (تصير) هنا تام بمعنى ترجع وتنتقل، واكتفى بمرفوعه (الأمور) فتعرب فاعلاً مرفوعاً."
+      },
+      {
+        q: "٢. «ليس المؤمنُ بخائنٍ وطنه». إعراب كلمة (بخائنٍ) ونوع خبر ليس:",
+        options: [
+          "اسم مجرور بالباء، ونوع الخبر شبه جملة",
+          "خبر ليس مجرور لفظاً منصوب محلاً، ونوع الخبر مفرد",
+          "خبر ليس منصوب بالفتحة الظاهرة، ونوع الخبر شبه جملة",
+          "مفعول به مجرور لفظاً، ونوع الخبر جملة اسمية"
+        ],
+        correct: 1,
+        feedback: "الباء هنا حرف جر زائد للتوكيد يمكن حذفه، و(خائن) خبر ليس مجرور لفظاً منصوب محلاً، ونوعه مفرد دائماً."
+      },
+      {
+        q: "٣. حكم اقتران خبر الفعل (أَوْشَك) بـ (أن)، وحكم تجريده منها:",
+        options: [
+          "يكثر اقترانه، ويقل تجريده",
+          "يقل اقترانه، ويكثر تجريده",
+          "يجب اقترانه، ويمتنع تجريده",
+          "يمتنع اقترانه، ويجب تجريده"
+        ],
+        correct: 0,
+        feedback: "(أوشك وعسى) يكثر اقتران خبرهما بأن، وبالتالي يقل تجريده منها لأن التجريد عكس الاقتران تماماً."
+      },
+      {
+        q: "٤. «أخذ المعلمُ يشرحُ» و «أخذ المعلمُ الكتابَ». إعراب كلمة (المعلم) في الجملتين على الترتيب:",
+        options: [
+          "اسم أخذ مرفوع - فاعل مرفوع",
+          "فاعل مرفوع - اسم أخذ مرفوع",
+          "فاعل مرفوع - فاعل مرفوع",
+          "اسم أخذ مرفوع - اسم أخذ مرفوع"
+        ],
+        correct: 0,
+        feedback: "في الأولى ناقص لوجود الخبر المضارع (يشرح)، وفي الثانية تام لغياب المضارع فـ (المعلم) فاعل والكتاب مفعول به."
+      },
+      {
+        q: "٥. «أممنوحٌ المتفوقُ جائزةً؟» إعراب كلمة (المتفوق) وكلمة (جائزةً):",
+        options: [
+          "فاعل مرفوع - مفعول به منصوب",
+          "نائب فاعل مرفوع - مفعول به ثانٍ منصوب",
+          "مبتدأ مؤخر - مفعول به منصوب",
+          "نائب فاعل مرفوع - تمييز منصوب"
+        ],
+        correct: 1,
+        feedback: "اسم المفعول (ممنوح) مشتق من فعل ينصب مفعولين، فرفع نائب فاعل (المتفوق) ونصب مفعولاً به ثانياً (جائزةً)."
+      },
+      {
+        q: "٦. «المعلمُ شارحُ الدرسِ» و «المعلمُ شارحٌ الدرسَ». إعراب كلمة (الدرس) في الجملتين:",
+        options: [
+          "مفعول به - مضاف إليه",
+          "مضاف إليه - مفعول به",
+          "مضاف إليه - مضاف إليه",
+          "مفعول به - مفعول به"
+        ],
+        correct: 1,
+        feedback: "الأول حُذف منه التنوين للإضافة فالدرسِ: مضاف إليه. الثاني منون عامل فالدرسَ: مفعول به منصوب."
+      },
+      {
+        q: "٧. «وقف الجيشُ صخرةً أمام غارات الأعداء». نوع التشبيه وصورته:",
+        options: [
+          "تشبيه مجمل",
+          "تشبيه بليغ (صورة الحال وصاحبها)",
+          "تشبيه بليغ (صورة المبتدأ والخبر)",
+          "تشبيه تمثيلي"
+        ],
+        correct: 1,
+        feedback: "تشبيه بليغ حذف الأداة ووجه الشبه، وجاء على هيئة الحال (صخرةً) وصاحب الحال (الجيش)."
+      },
+      {
+        q: "٨. «عبر أسودُنا قناة السويس محطمين خط بارليف». نوع الاستعارة في (أسودنا):",
+        options: [
+          "استعارة مكنية، وسر جمالها التشخيص",
+          "استعارة تصريحية، وسر جمالها التوضيح",
+          "تشبيه بليغ محذوف الأداة",
+          "استعارة تصريحية، وسر جمالها التجسيم"
+        ],
+        correct: 1,
+        feedback: "شبّه الجنود بالأسود، حذف المشبه (الجنود) وصرح بلفظ المشبه به (أسودنا)، وسر جمالها التوضيح."
+      },
+      {
+        q: "٩. «حدّثني التاريخُ عن أمجاد أمتنا الخالدة». سر الجمال البلاغي في العبارة هو:",
+        options: [
+          "التجسيم",
+          "التوضيح",
+          "التشخيص",
+          "التوكيد"
+        ],
+        correct: 2,
+        feedback: "شبه التاريخ (غير عاقل) بإنسان يتحدث، وتشبيه غير العاقل بإنسان سر جماله دائماً هو التشخيص."
+      },
+      {
+        q: "١٠. القول الراجح في سبب تسمية (المعلقات) في العصر الجاهلي بهذا الاسم هو:",
+        options: [
+          "أنها علقت على أستار الكعبة بماء الذهب",
+          "أنها كتبت على رقاع من جلد وعُلقت في البيوت",
+          "سرعة تعلقها بأذهان الناس وحفظهم لها لجودتها",
+          "أنها شبهت بالمعلقات من حلي النساء"
+        ],
+        correct: 2,
+        feedback: "الرأي الأصح تاريخياً ونقدياً هو سرعة تعلقها بنفوس العرب وأذهانهم وحفظهم لها لروعتها."
+      },
+      {
+        q: "١١. من الأغراض الشعرية التي اندثرت وحُرِّمت في عصر صدر الإسلام:",
+        options: [
+          "شعر الفتوحات والمغازي",
+          "الغزل الصريح والهجاء القبلي الفاحش ووصف الخمر",
+          "شعر الحكمة والدفاع عن العقيدة",
+          "المدح والرثاء"
+        ],
+        correct: 1,
+        feedback: "حرم الإسلام الغزل الفاحش الماجن، الهجاء المقذع، والعصبية القبلية، ووصف الخمر."
+      },
+      {
+        q: "١٢. المعارك الشعرية التي امتزج فيها الفخر بالهجاء في العصر الأموي تُعرف بـ:",
+        options: [
+          "المعلقات",
+          "شعر النقائض (بين جرير والفرزدق والأخطل)",
+          "الشعر السياسي",
+          "الموشحات الأندلسية"
+        ],
+        correct: 1,
+        feedback: "شعر النقائض هو الغرض الذي امتزج فيه الفخر بالهجاء واشتهر به جرير والفرزدق والأخطل."
+      }
+    ];
+
+    function renderQuiz() {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = '';
+      quizData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-2xl p-6 transition shadow-md";
+        card.id = `qCard-${index}`;
+
+        let optsHtml = '';
+        item.options.forEach((opt, optIdx) => {
+          optsHtml += `
+            <label class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-700 cursor-pointer text-xs sm:text-sm text-slate-200 transition">
+              <input type="radio" name="q-${index}" value="${optIdx}" class="w-4 h-4 text-sky-500 focus:ring-0 focus:outline-none">
+              <span>${opt}</span>
+            </label>
+          `;
+        });
+
+        card.innerHTML = `
+          <h4 class="font-bold text-white text-sm sm:text-base mb-4 leading-relaxed">${item.q}</h4>
+          <div class="space-y-2.5 mb-3">${optsHtml}</div>
+          <div id="feedback-${index}" class="hidden p-3.5 rounded-xl text-xs leading-relaxed mt-3"></div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      quizData.forEach((item, index) => {
+        const selected = document.querySelector(`input[name="q-${index}"]:checked`);
+        const fb = document.getElementById(`feedback-${index}`);
+        const card = document.getElementById(`qCard-${index}`);
+        fb.classList.remove('hidden');
+
+        if (selected) {
+          const val = parseInt(selected.value);
+          if (val === item.correct) {
+            score++;
+            card.classList.add('border-emerald-500/50');
+            card.classList.remove('border-rose-500/50', 'border-amber-500/50');
+            fb.className = "p-3.5 rounded-xl text-xs bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 font-semibold";
+            fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 ml-1"></i> إجابة صحيحة ممتازة! • ${item.feedback}`;
+          } else {
+            card.classList.add('border-rose-500/50');
+            card.classList.remove('border-emerald-500/50', 'border-amber-500/50');
+            fb.className = "p-3.5 rounded-xl text-xs bg-rose-950/40 border border-rose-500/30 text-rose-300 font-semibold";
+            fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400 ml-1"></i> إجابة خاطئة! الإجابة الصحيحة: (${item.options[item.correct]}) • ${item.feedback}`;
+          }
+        } else {
+          card.classList.add('border-amber-500/50');
+          fb.className = "p-3.5 rounded-xl text-xs bg-amber-950/40 border border-amber-500/30 text-amber-300 font-semibold";
+          fb.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-400 ml-1"></i> لم تقم باختيار إجابة! الإجابة الصحيحة: (${item.options[item.correct]}) • ${item.feedback}`;
+        }
+      });
+
+      const scoreBox = document.getElementById('quizScoreBox');
+      const scoreTxt = document.getElementById('quizScore');
+      scoreTxt.textContent = score;
+      scoreBox.classList.remove('hidden');
+      scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showToast(`تم التصحيح! نتيجتك: ${score} من ١٢`);
+    }
+
+    function resetQuiz() {
+      renderQuiz();
+      document.getElementById('quizScoreBox').classList.add('hidden');
+      showToast('تمت إعادة ضبط الاختبار بنجاح.');
+    }
+
+    // تشغيل الاختبار عند تحميل الصفحة
+    window.onload = function() {
+      renderQuiz();
+    };
+  </script>
+</body>
+</html>
